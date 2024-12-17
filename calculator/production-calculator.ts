@@ -1,5 +1,5 @@
+import type { CalculatorConfig } from './calculator-config';
 import { getModuleValue, type QualityTier } from './constants';
-import type { CalculatorConfig } from './cycle-calculator';
 
 export class ProductionCalculator {
   constructor(private config: CalculatorConfig) {

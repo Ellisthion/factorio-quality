@@ -5,14 +5,17 @@
 </template>
 
 <script setup lang="ts">
+import { buildConfig } from '~/calculator/calculator-config';
 import { qualityFromName } from '~/calculator/constants';
 import { CycleCalculator } from '~/calculator/cycle-calculator';
 
-const cycleCalculator = new CycleCalculator({
+const config = buildConfig({
   machineProductivity: 0,
   moduleSlots: 4,
   keepQuality: qualityFromName('Normal')
-}, [2, 2, 2, 2, 0]);
+});
+
+const cycleCalculator = new CycleCalculator(config, [2, 2, 2, 2, 0]);
 
 const results = cycleCalculator.craftCycle(1);
 </script>

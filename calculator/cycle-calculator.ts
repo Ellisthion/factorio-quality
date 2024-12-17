@@ -1,39 +1,15 @@
-import { qualityFromName, type ModuleTier, type QualityTier } from './constants';
+import type { CalculatorConfig } from './calculator-config';
+import { type QualityTier } from './constants';
 import { ProductionCalculator } from './production-calculator';
 import { sum, tupleSum } from './utils';
 
-const defaultConfig: CalculatorConfig = {
-  machineProductivity: 0,
-  researchProductivity: 0,
-  moduleSlots: 4,
-
-  maxQuality: qualityFromName('Legendary'),
-  keepQuality: qualityFromName('Legendary'),
-  
-  productivityModuleTier: 3,
-  productivityModuleQuality: qualityFromName('Legendary'),
-
-  qualityModuleTier: 3,
-  qualityModuleQuality: qualityFromName('Legendary'),
-
-  epsilon: 0.001 / 100
-}
-
 export class CycleCalculator {
-  private readonly config: CalculatorConfig;
   private readonly productionCalculator: ProductionCalculator;
-  private readonly qualityModuleCountByTier: number[];
   private readonly productivityModuleCountByTier: number[];
 
-  constructor(config: Partial<CalculatorConfig>, qualityModuleCountByTier: number[]) {
-    this.config = {
-      ...defaultConfig,
-      ...config
-    }
-
+  constructor(private config: CalculatorConfig, private qualityModuleCountByTier: number[]) {
     this.productionCalculator = new ProductionCalculator(this.config);
 
-    this.qualityModuleCountByTier = qualityModuleCountByTier;
     this.productivityModuleCountByTier = qualityModuleCountByTier.map(c => this.config.moduleSlots - c);
   }
 
@@ -84,21 +60,4 @@ export class CycleCalculator {
     
     return combinedResults;
   }
-}
-
-export type CalculatorConfig = {
-  machineProductivity: number,
-  researchProductivity: number,
-  moduleSlots: number,
-
-  maxQuality: number,
-  keepQuality: number,
-  
-  productivityModuleTier: ModuleTier,
-  productivityModuleQuality: QualityTier,
-
-  qualityModuleTier: ModuleTier,
-  qualityModuleQuality: QualityTier,
-
-  epsilon: number
 }
