@@ -24,6 +24,28 @@ export class PermutationCalculator {
     return results;
   }
 
+  // Only results where all the module configs are 'similar'
+  public filterOnlyImportantPermutations(permutationResults: PermutationResult[]): PermutationResult[] {
+    return permutationResults.filter((result, index) => {
+      // Just in case best value is abnormal
+      if (index === 0) {
+        return true;
+      }
+
+      // Just in case we're being weird
+      if (result.qualityModulesByTier.length === 1) {
+        return true;
+      }
+
+      const valuesThatShouldBeEqual = result.qualityModulesByTier.slice(0, this.config.keepQuality);
+      const valuesThatShouldBeZero = result.qualityModulesByTier.slice(this.config.keepQuality);
+
+      const firstValue = result.qualityModulesByTier[0];
+      return valuesThatShouldBeEqual.every(v => v === firstValue) &&
+        valuesThatShouldBeZero.every(v => v === 0);
+    });
+  }
+
   private createAllModuleSetups(): number[][] {
     let results: number[][] = [[]];
     for (let quality = 0; quality <= this.config.maxQuality; ++quality) {

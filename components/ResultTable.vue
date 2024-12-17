@@ -13,7 +13,7 @@
             Sample
           </td>
           <td v-for="(q, i) of qualities" :key="q">
-            {{ formatValue(data[i] * sampleSize, 'integer') }}
+            {{ formatValue(data[i] * sampleSize, 'outputs') }}
           </td>
         </tr>
         <tr>
@@ -24,14 +24,6 @@
             {{ formatValue(data[i], 'percentage') }}
           </td>
 
-        </tr>
-        <tr>
-          <td>
-            Raw
-          </td>
-          <td v-for="(q, i) of qualities" :key="q">
-            {{ formatValue(data[i] * sampleSize, 'raw')}}
-          </td>
         </tr>
       </tbody>
     </table>
@@ -46,17 +38,15 @@ const props = defineProps<{
   sampleSize: number
 }>();
 
-function formatValue(v: number, format: 'integer' | 'percentage'  | 'raw'): string {
+function formatValue(v: number, format: 'percentage' | 'outputs'): string {
   switch (format) {
-    case 'integer':
-      return Math.round(v).toString();
     case 'percentage': {
       const decimalPlaces = 3;
       const multiplier = Math.pow(10, decimalPlaces);
       return Math.round(v * 100 * multiplier) / multiplier + '%';
     }
-    case 'raw': {
-      const decimalPlaces = 10;
+    case 'outputs': {
+      const decimalPlaces = 3;
       const multiplier = Math.pow(10, decimalPlaces);
       return (Math.round(v * multiplier) / multiplier).toString();
     }

@@ -10,6 +10,7 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "modern-normalize": "^3.0.1",
     "nuxt": "^3.14.1592",
     "sass": "^1.81.0",
     "vue": "latest",

@@ -1,5 +1,6 @@
 import type { CalculatorConfig } from './calculator-config';
-import { getModuleValue, type QualityTier } from './constants';
+import { type QualityTier } from './constants';
+import { calculateProductivity, calculateQuality } from './module-calculator';
 
 export class ProductionCalculator {
   constructor(private config: CalculatorConfig) {
@@ -39,13 +40,11 @@ export class ProductionCalculator {
   }
 
   private getEffectiveProductivity(productivityModules: number): number {
-    const productivityModuleValue = getModuleValue('productivity', this.config.productivityModuleQuality, this.config.productivityModuleTier);
-    return (100 + this.config.machineProductivity + this.config.researchProductivity + productivityModules * productivityModuleValue) / 100;
+    return calculateProductivity(productivityModules, this.config);
   }
   
   private getEffectiveQuality(qualityModules: number): number {
-    const qualityModuleValue = getModuleValue('quality', this.config.qualityModuleQuality, this.config.qualityModuleTier);
-    return (qualityModules * qualityModuleValue) / 100;
+    return calculateQuality(qualityModules, this.config);
   }
 
   private createItems(count: number, quality: QualityTier): number[] {

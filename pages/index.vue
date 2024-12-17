@@ -1,26 +1,46 @@
 <template>
   <div class="index-page">
-    <ResultTable :data="results" :sample-size="50" />
+    <ConfigSelector v-model="config" />
+    <div>
+      {{ permutationResults[0].qualityModulesByTier.join(', ') }}
+    </div>
+
+    <ResultTable :data="permutationResults[0].output" :sample-size="50" />
   </div>
 </template>
 
 <script setup lang="ts">
-import { buildConfig } from '~/calculator/calculator-config';
-import { qualityFromName } from '~/calculator/constants';
-import { CycleCalculator } from '~/calculator/cycle-calculator';
-import { PermutationCalculator } from '~/calculator/permutation-calculator';
+import { buildConfig, type CalculatorConfig } from '~/calculator/calculator-config';
+import { PermutationCalculator, type PermutationResult } from '~/calculator/permutation-calculator';
 
-const config = buildConfig({
-  machineProductivity: 50,
-  moduleSlots: 5,
-  keepQuality: qualityFromName('Legendary')
-});
+const config = ref<CalculatorConfig>(buildConfig({}));
 
-const cycleCalculator = new CycleCalculator(config, [2, 2, 2, 2, 0]);
-const results = cycleCalculator.craftCycle(1);
+const permutationResults = ref<PermutationResult[]>([{ output: [], qualityModulesByTier: [] }]);
 
-const permutationCalculator = new PermutationCalculator(config);
-permutationCalculator.calculatePermutations();
+watch(config, async () => {
+    permutationResults.value = await doPermutationsAsync();
+  },
+  { immediate: true}
+);
+
+async function doPermutationsAsync(): Promise<PermutationResult[]> {
+  return new Promise((resolve, reject) => {
+    try {
+      const permutationCalculator = new PermutationCalculator(config.value);
+
+      const startTime = performance.now();
+      const rawResults = permutationCalculator.calculatePermutations();
+      const endTime = performance.now();
+      console.log(`Permutations took ${endTime - startTime} milliseconds`);
+      
+      const interestingResults = permutationCalculator.filterOnlyImportantPermutations(rawResults);
+      resolve(interestingResults);
+    } catch (e) {
+      console.error(e);
+      reject(e);
+    }
+  });
+};
 </script>
 
 <style lang="scss" scoped>

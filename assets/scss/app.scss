@@ -1,0 +1,13 @@
+@use 'modern-normalize';
+
+.button {
+  padding: 0.25em 0.5em;
+
+  border: 1px solid grey;
+  background-color: transparent;
+
+  &.is-active {
+    border: 1px solid blue;
+    background-color: lightblue;;
+  }
+}
