@@ -17,7 +17,7 @@ export class PermutationCalculator {
         qualityModulesByTier: moduleSetup,
         output: cycleResult
       };
-    })
+    });
 
     results.sort((a, b) => sum(b.output) - sum(a.output));
 

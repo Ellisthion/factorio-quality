@@ -26,13 +26,14 @@ watch(config, async () => {
 async function doPermutationsAsync(): Promise<PermutationResult[]> {
   return new Promise((resolve, reject) => {
     try {
-      const permutationCalculator = new PermutationCalculator(config.value);
+      const configSnapshot = { ...config.value };
+      const permutationCalculator = new PermutationCalculator(configSnapshot);
 
       const startTime = performance.now();
       const rawResults = permutationCalculator.calculatePermutations();
       const endTime = performance.now();
       console.log(`Permutations took ${endTime - startTime} milliseconds`);
-      
+
       const interestingResults = permutationCalculator.filterOnlyImportantPermutations(rawResults);
       resolve(interestingResults);
     } catch (e) {

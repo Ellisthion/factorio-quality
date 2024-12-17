@@ -7,8 +7,8 @@ export class ProductionCalculator {
   }
 
   public craftSingle(input: number, quality: QualityTier, productivityModules: number, qualityModules: number): number[] {
-    const effectiveProductivity = this.getEffectiveProductivity(productivityModules);
-    const effectiveQuality = this.getEffectiveQuality(qualityModules);
+    const effectiveProductivity = calculateProductivity(productivityModules, this.config);
+    const effectiveQuality = calculateQuality(qualityModules, this.config);
 
     return this.craftSingleRecipe(input, quality, effectiveProductivity, effectiveQuality);
   }
@@ -19,37 +19,39 @@ export class ProductionCalculator {
     }
 
     const effectiveProductivity = 0.25;
-    const effectiveQuality = this.getEffectiveQuality(4);
+    const effectiveQuality = calculateQuality(4, this.config);
 
     return this.craftSingleRecipe(input, quality, effectiveProductivity, effectiveQuality);
   }
 
   private craftSingleRecipe(input: number, quality: QualityTier, effectiveProductivity: number, effectiveQuality: number): number[] {
-    const baseOutputs = this.createItems(input, quality);
+    const qualityMatrix = this.getQualityMatrix(quality, effectiveQuality);
 
-    for (let outputTierIndex = quality; outputTierIndex < this.config.maxQuality; ++outputTierIndex) {
-      const chance = outputTierIndex === quality ? effectiveQuality : 0.1;
-      const inputs = baseOutputs[outputTierIndex];
-
-      baseOutputs[outputTierIndex] = inputs * (1 - chance);
-      baseOutputs[outputTierIndex + 1] = inputs * chance;
+    let results = [];
+    for (let i = 0; i < qualityMatrix.length; ++i) {
+      results[i] = qualityMatrix[i] * input * effectiveProductivity;
     }
 
-    const outputs = baseOutputs.map(v => v * effectiveProductivity);
+    return results;
+  }
+
+  private getQualityMatrix(quality: QualityTier, effectiveQuality: number): number[] {
+    const outputs: number[] = [];
+    outputs[quality] = 1;
+
+    for (let outputTierIndex = 0; outputTierIndex < this.config.maxQuality; ++outputTierIndex) {
+      if (outputTierIndex < quality) {
+        outputs[outputTierIndex] = 0;
+        continue;
+      }
+
+      const chance = outputTierIndex === quality ? effectiveQuality : 0.1;
+      const inputs = outputs[outputTierIndex];
+
+      outputs[outputTierIndex] = inputs * (1 - chance);
+      outputs[outputTierIndex + 1] = inputs * chance;
+    }
+
     return outputs;
-  }
-
-  private getEffectiveProductivity(productivityModules: number): number {
-    return calculateProductivity(productivityModules, this.config);
-  }
-  
-  private getEffectiveQuality(qualityModules: number): number {
-    return calculateQuality(qualityModules, this.config);
-  }
-
-  private createItems(count: number, quality: QualityTier): number[] {
-    const baseOutputs = new Array(this.config.maxQuality + 1).fill(0);
-    baseOutputs[quality] = count;
-    return baseOutputs;
   }
 }
