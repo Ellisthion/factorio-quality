@@ -8,13 +8,18 @@
 
   &.is-active {
     border: 1px solid blue;
-    background-color: lightblue;;
+    background-color: lightblue;
   }
 
   &:disabled,
   &.is-disabled {
     background-color: lightgrey;
     filter: grayscale(50)
+  }
+
+  &:hover {
+    border: 1px solid blue;
+    background-color: lightblue;
   }
 }
 

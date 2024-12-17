@@ -4,12 +4,19 @@
 
     <ResultSetup :data="permutationResults" :config="config" />
     <ResultTable :data="permutationResults[0].output" :sample-size="50" />
+
+    <!-- <button type="button" class="button" @click="runOptimiser()">
+      Run Optimiser
+    </button> -->
   </div>
 </template>
 
 <script setup lang="ts">
 import { buildConfig, type CalculatorConfig } from '~/calculator/calculator-config';
+import { Optimiser } from '~/calculator/optimiser';
 import { PermutationCalculator, type PermutationResult } from '~/calculator/permutation-calculator';
+
+// const runOptimiser = () => new Optimiser().run();
 
 const config = ref<CalculatorConfig>(buildConfig({}));
 
