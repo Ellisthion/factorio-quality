@@ -23,11 +23,13 @@ export function printTuple(array: number[]): string {
 }
 
 export function formatValue(v: number, format: 'percentage' | 'outputs', precision?: number): string {
+  const epsilon = 0.00001;
+
   switch (format) {
     case 'percentage': {
       if (precision) {
-        if (v === 1 || v === 0) {
-          return (v * 100) + '%';
+        if ((v + epsilon >= 1) || (v - epsilon <= 0)) {
+          return Math.round(v * 100) + '%';
         }
 
         return (v * 100).toFixed(precision) + '%';

@@ -13,14 +13,14 @@ export class CycleCalculator {
     this.productivityModuleCountByTier = qualityModuleCountByTier.map(c => this.config.moduleSlots - c);
   }
 
-  public craftCycle(count: number, quality = 0): number[] {
+  public craftCycle(count: number, quality = 0): CycleResult {
     const ingredients = new Array(this.config.maxQuality + 1).fill(0);
     ingredients[quality] = count;
 
     return this.craftCycleLoop(ingredients);
   }
 
-  private craftCycleLoop(ingredients: number[]): number[] {
+  private craftCycleLoop(ingredients: number[]): CycleResult {
     let stopFlag = false;
     let savedOutputs = new Array<number>(this.config.maxQuality + 1);
 
@@ -67,6 +67,15 @@ export class CycleCalculator {
 
       ingredients = tupleSum(eachRecycled);
     }
-    return savedOutputs;
+
+    return {
+      outputs: savedOutputs,
+      iterations: iteration
+    };
   }
+}
+
+export type CycleResult = {
+  outputs: number[],
+  iterations: number
 }

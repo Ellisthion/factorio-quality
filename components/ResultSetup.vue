@@ -20,7 +20,8 @@
       <tbody>
         <tr v-for="(setup, i) of data" :key="i">
           <td>
-            {{ `${formatValue(fractionOfBest[i], 'percentage', 1)}` }}
+            <div>{{ `${formatValue(fractionOfBest[i], 'percentage', 1)}` }}</div>
+            <div class="text-muted text-small">{{ setup.iterations }} iterations</div>
           </td>
 
           <td v-for="(qualityName, quality) of qualities" :key="qualityName">

@@ -15,11 +15,19 @@ export class PermutationCalculator {
 
       return {
         qualityModulesByTier: moduleSetup,
-        output: cycleResult
+        output: cycleResult.outputs,
+        iterations: cycleResult.iterations
       };
     });
 
-    results.sort((a, b) => sum(b.output) - sum(a.output));
+    results.sort((a, b) => {
+      const outputDiff = sum(b.output) - sum(a.output);
+      const iterationsDiff = a.iterations - b.iterations;
+
+      return Math.abs(outputDiff) > 0.00001
+        ? outputDiff
+        : iterationsDiff;
+    });
 
     return results;
   }
@@ -66,5 +74,6 @@ export class PermutationCalculator {
 
 export type PermutationResult = {
   qualityModulesByTier: number[],
-  output: number[]
+  output: number[],
+  iterations: number
 }

@@ -13,7 +13,7 @@ import { PermutationCalculator, type PermutationResult } from '~/calculator/perm
 
 const config = ref<CalculatorConfig>(buildConfig({}));
 
-const permutationResults = ref<PermutationResult[]>([{ output: [], qualityModulesByTier: [] }]);
+const permutationResults = ref<PermutationResult[]>([{ output: [], qualityModulesByTier: [], iterations: 0 }]);
 
 watch(config, async () => {
     permutationResults.value = await doPermutationsAsync();
