@@ -8,16 +8,19 @@
 import { buildConfig } from '~/calculator/calculator-config';
 import { qualityFromName } from '~/calculator/constants';
 import { CycleCalculator } from '~/calculator/cycle-calculator';
+import { PermutationCalculator } from '~/calculator/permutation-calculator';
 
 const config = buildConfig({
-  machineProductivity: 0,
-  moduleSlots: 4,
-  keepQuality: qualityFromName('Normal')
+  machineProductivity: 50,
+  moduleSlots: 5,
+  keepQuality: qualityFromName('Legendary')
 });
 
 const cycleCalculator = new CycleCalculator(config, [2, 2, 2, 2, 0]);
-
 const results = cycleCalculator.craftCycle(1);
+
+const permutationCalculator = new PermutationCalculator(config);
+permutationCalculator.calculatePermutations();
 </script>
 
 <style lang="scss" scoped>
