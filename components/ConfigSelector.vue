@@ -16,6 +16,9 @@
       <label>Machine</label>
       <span>{{ selectedMachine.name }}</span>
 
+      <label>Module Slots</label>
+      <span>{{ selectedMachine.moduleSlots }}</span>
+
       <label>Machine Productivity</label>
       <span>{{ selectedMachine.productivity }}%</span>
 

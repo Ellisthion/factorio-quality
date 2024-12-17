@@ -24,7 +24,23 @@
           </td>
 
           <td v-for="(qualityName, quality) of qualities" :key="qualityName">
-            {{ setup.qualityModulesByTier[quality] }}
+            <div class="result-cell">
+              <div class="module-count">
+                {{ setup.qualityModulesByTier[quality] }}
+              </div>
+
+              <div class="stats">
+                <div class="stat stat-quality">
+                  <span>Q:</span>
+                  <span>{{ getStatQuality(setup.qualityModulesByTier[quality]) }}</span>
+                </div>
+
+                <div class="stat stat-productivity">
+                  <span>P:</span>
+                  <span>{{ getStatProductivity(config.moduleSlots - setup.qualityModulesByTier[quality]) }}</span>
+                </div>
+              </div>
+            </div>
           </td>
         </tr>
 
@@ -40,20 +56,47 @@
 </template>
 
 <script setup lang="ts">
+import type { CalculatorConfig } from '~/calculator/calculator-config';
 import { qualities } from '~/calculator/constants';
+import { calculateProductivity, calculateQuality } from '~/calculator/module-calculator';
 import type { PermutationResult } from '~/calculator/permutation-calculator';
 import { sum } from '~/calculator/utils';
 import { formatValue } from '~/calculator/utils';
 
 const props = defineProps<{
   data: PermutationResult[],
-  moduleSlots: number
+  config: CalculatorConfig,
 }>();
 
 const sums = computed(() => props.data.map(o => sum(o.output)));
 const fractionOfBest = computed(() => sums.value.map(s => s / sums.value[0]));
+
+function getStatProductivity(productivityModuleCount: number): string {
+  const p = calculateProductivity(productivityModuleCount, props.config);
+  return formatValue(p - 1, 'percentage');
+}
+
+function getStatQuality(qualityModuleCount: number): string {
+  const q = calculateQuality(qualityModuleCount, props.config);
+  return formatValue(q, 'percentage');
+}
 </script>
 
 <style lang="scss" scoped>
+.result-cell {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  
+  .stats {
+    font-size: calc(10 / 16 * 1rem);
+    color: grey;
+
+    .stat {
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+}
 </style>
 

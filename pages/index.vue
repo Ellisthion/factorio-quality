@@ -2,7 +2,7 @@
   <div class="index-page">
     <ConfigSelector v-model="config" />
 
-    <ResultSetup :data="permutationResults" :module-slots="config.moduleSlots" />
+    <ResultSetup :data="permutationResults" :config="config" />
     <ResultTable :data="permutationResults[0].output" :sample-size="50" />
   </div>
 </template>
