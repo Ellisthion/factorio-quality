@@ -10,10 +10,27 @@
       <tbody>
         <tr>
           <td>
-            Result
+            Sample
           </td>
           <td v-for="(q, i) of qualities" :key="q">
-            {{ formatPercentage(data.getQualityValue(i)) }}
+            {{ formatValue(data[i] * sampleSize, 'integer') }}
+          </td>
+        </tr>
+        <tr>
+          <td>
+            Percentage
+          </td>
+          <td v-for="(q, i) of qualities" :key="q">
+            {{ formatValue(data[i], 'percentage') }}
+          </td>
+
+        </tr>
+        <tr>
+          <td>
+            Raw
+          </td>
+          <td v-for="(q, i) of qualities" :key="q">
+            {{ formatValue(data[i] * sampleSize, 'raw')}}
           </td>
         </tr>
       </tbody>
@@ -23,16 +40,29 @@
 
 <script setup lang="ts">
 import { qualities } from '~/calculator/constants';
-import type { QualityItem } from '~/calculator/quality-item';
 
-defineProps<{
-  data: QualityItem
+const props = defineProps<{
+  data: number[],
+  sampleSize: number
 }>();
 
-function formatPercentage(v: number): string {
-  const decimalPlaces = 4;
-  const multiplier = Math.pow(10, decimalPlaces);
-  return Math.round(v * 100 * multiplier) / multiplier + '%';
+function formatValue(v: number, format: 'integer' | 'percentage'  | 'raw'): string {
+  switch (format) {
+    case 'integer':
+      return Math.round(v).toString();
+    case 'percentage': {
+      const decimalPlaces = 3;
+      const multiplier = Math.pow(10, decimalPlaces);
+      return Math.round(v * 100 * multiplier) / multiplier + '%';
+    }
+    case 'raw': {
+      const decimalPlaces = 10;
+      const multiplier = Math.pow(10, decimalPlaces);
+      return (Math.round(v * multiplier) / multiplier).toString();
+    }
+    default:
+      throw new Error('Bad arg: ' + v);
+  }
 }
 </script>
 
@@ -43,7 +73,7 @@ table {
 
 th, td {
   padding: 0.25rem;
-  
+
   border: 1px solid black;
   text-align: right;
 }

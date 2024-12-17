@@ -47,13 +47,15 @@ export class QualityItem {
   }
 
   public multiply(scalar: number): QualityItem {
-    return new QualityItem([
-       this.values[0] * scalar,
-       this.values[1] * scalar,
-       this.values[2] * scalar,
-       this.values[3] * scalar,
-       this.values[4] * scalar
-    ]);
+    return new QualityItem(this.values.map(v => v * scalar) as QualityTuple);
+  }
+
+  public floor(): QualityItem {
+    return new QualityItem(this.values.map(v => Math.floor(v)) as QualityTuple);
+  }
+
+  public toString(): string {
+    return `[${this.values.join(', ')}]`;
   }
 }
 
