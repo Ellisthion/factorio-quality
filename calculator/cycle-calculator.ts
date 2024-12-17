@@ -17,49 +17,56 @@ export class CycleCalculator {
     const ingredients = new Array(this.config.maxQuality + 1).fill(0);
     ingredients[quality] = count;
 
-    return this.craftCycleRecursive(ingredients);
+    return this.craftCycleLoop(ingredients);
   }
 
-  private craftCycleRecursive(ingredients: number[]): number[] {
-    let eachCrafted: number[][] = [];
-    for (let quality = 0; quality < ingredients.length; ++quality) {
-      const p = this.productivityModuleCountByTier[quality];
-      const q = this.qualityModuleCountByTier[quality];
-      eachCrafted[quality] = this.productionCalculator.craftSingle(ingredients[quality], quality as QualityTier, p, q);
-    }
+  private craftCycleLoop(ingredients: number[]): number[] {
+    let stopFlag = false;
+    let savedOutputs = new Array<number>(this.config.maxQuality + 1);
 
-    const allCrafted = tupleSum(eachCrafted);
-  
-    let toRecycle = new Array<number>(this.config.maxQuality + 1);
-    let toKeep = new Array<number>(this.config.maxQuality + 1);
-    for (let q = 0; q <= this.config.maxQuality; ++q) {
-      if (q < this.config.keepQuality) {
-        toKeep[q] = 0;
-        toRecycle[q] = allCrafted[q];
-      } else {
-        toKeep[q] = allCrafted[q];
-        toRecycle[q] = 0;
+    const maxIterations = 100;
+    let iteration = 0;
+
+    while (!stopFlag && iteration++ < maxIterations) {
+      let eachCrafted: number[][] = [];
+      for (let quality = 0; quality < ingredients.length; ++quality) {
+        const p = this.productivityModuleCountByTier[quality];
+        const q = this.qualityModuleCountByTier[quality];
+        eachCrafted[quality] = this.productionCalculator.craftSingle(ingredients[quality], quality as QualityTier, p, q);
       }
-    }
 
-    const areWeDone = sum(toRecycle) < this.config.epsilon;
-    if (areWeDone) {
-      return allCrafted;
-    }
-
-    const eachRecycled = toRecycle.map((count, quality) => {
-      if (count === 0) {
-        return [];
-      }
-      const result = this.productionCalculator.recycleSingle(count, quality as QualityTier);
-      return result;
-    });
-
-    const allRecycled = tupleSum(eachRecycled);
-
-    const recursiveCraftResults = this.craftCycleRecursive(allRecycled);
-    const combinedResults = tupleSum([toKeep, recursiveCraftResults]);
+      const allCrafted = tupleSum(eachCrafted);
     
-    return combinedResults;
+      let toRecycle = new Array<number>(this.config.maxQuality + 1);
+      let toKeep = new Array<number>(this.config.maxQuality + 1);
+      for (let q = 0; q <= this.config.maxQuality; ++q) {
+        if (q < this.config.keepQuality) {
+          toKeep[q] = 0;
+          toRecycle[q] = allCrafted[q];
+        } else {
+          toKeep[q] = allCrafted[q];
+          toRecycle[q] = 0;
+        }
+      }
+
+      stopFlag = sum(toRecycle) < this.config.epsilon;
+      if (stopFlag) {
+        savedOutputs = tupleSum([savedOutputs, allCrafted]);
+        break;
+      }
+
+      const eachRecycled = toRecycle.map((count, quality) => {
+        if (count === 0) {
+          return [];
+        }
+        const result = this.productionCalculator.recycleSingle(count, quality as QualityTier);
+        return result;
+      });
+
+      savedOutputs = tupleSum([savedOutputs, toKeep]);
+
+      ingredients = tupleSum(eachRecycled);
+    }
+    return savedOutputs;
   }
 }

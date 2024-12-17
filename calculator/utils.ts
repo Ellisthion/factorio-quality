@@ -11,7 +11,7 @@ export function tupleSum(inputs: number[][]): number[] {
         result[i] = 0;
       }
 
-      result[i] += tuple[i];
+      result[i] += tuple[i] ?? 0;
     }
   }
 
@@ -32,7 +32,7 @@ export function formatValue(v: number, format: 'percentage' | 'outputs', precisi
 
         return (v * 100).toFixed(precision) + '%';
       }
-      
+
       const decimalPlaces = 3;
       const multiplier = Math.pow(10, decimalPlaces);
       return Math.round(v * 100 * multiplier) / multiplier + '%';
