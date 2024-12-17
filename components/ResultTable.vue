@@ -3,27 +3,42 @@
     <table>
       <thead>
         <tr>
-          <th></th>
-          <th v-for="quality of qualities" :key="quality">{{ quality }}</th>
+          <th class="no-border"></th>
+          <th :colspan="qualities.length + 1" class="text-center">
+            Final Outputs
+          </th>
+          <th class="no-border"></th>
+        </tr>
+        <tr>
+          <th class="no-border"></th>
+          
+          <th v-for="qualityName of qualities" :key="qualityName" class="text-center">
+            <ItemIcon :icon="qualityName" />
+          </th>
+
+          <th class="text-center">Total</th>
         </tr>
       </thead>
       <tbody>
-        <tr>
+        <!-- <tr>
           <td>
             Sample
           </td>
           <td v-for="(q, i) of qualities" :key="q">
-            {{ formatValue(data[i] * sampleSize, 'outputs') }}
+            {{ formatValue(data[i] * sampleSize, 'outputs', 2) }}
           </td>
-        </tr>
+        </tr> -->
         <tr>
           <td>
             Percentage
           </td>
           <td v-for="(q, i) of qualities" :key="q">
-            {{ formatValue(data[i], 'percentage') }}
+            {{ formatValue(data[i], 'percentage', 2) }}
           </td>
 
+          <td>
+            {{ formatValue(sum(data), 'percentage', 2) }}
+          </td>
         </tr>
       </tbody>
     </table>
@@ -32,40 +47,14 @@
 
 <script setup lang="ts">
 import { qualities } from '~/calculator/constants';
+import { formatValue, sum } from '~/calculator/utils';
 
 const props = defineProps<{
   data: number[],
   sampleSize: number
 }>();
-
-function formatValue(v: number, format: 'percentage' | 'outputs'): string {
-  switch (format) {
-    case 'percentage': {
-      const decimalPlaces = 3;
-      const multiplier = Math.pow(10, decimalPlaces);
-      return Math.round(v * 100 * multiplier) / multiplier + '%';
-    }
-    case 'outputs': {
-      const decimalPlaces = 3;
-      const multiplier = Math.pow(10, decimalPlaces);
-      return (Math.round(v * multiplier) / multiplier).toString();
-    }
-    default:
-      throw new Error('Bad arg: ' + v);
-  }
-}
 </script>
 
 <style lang="scss" scoped>
-table {
-  border-collapse: collapse;
-}
-
-th, td {
-  padding: 0.25rem;
-
-  border: 1px solid black;
-  text-align: right;
-}
 </style>
 

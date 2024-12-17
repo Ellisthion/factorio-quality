@@ -21,3 +21,20 @@ export function tupleSum(inputs: number[][]): number[] {
 export function printTuple(array: number[]): string {
   return `[${array.join(', ')}]`;
 }
+
+export function formatValue(v: number, format: 'percentage' | 'outputs', precision?: number): string {
+  switch (format) {
+    case 'percentage': {
+      const decimalPlaces = precision ?? 3;
+      const multiplier = Math.pow(10, decimalPlaces);
+      return Math.round(v * 100 * multiplier) / multiplier + '%';
+    }
+    case 'outputs': {
+      const decimalPlaces = precision ?? 3;
+      const multiplier = Math.pow(10, decimalPlaces);
+      return (Math.round(v * multiplier) / multiplier).toString();
+    }
+    default:
+      throw new Error('Bad arg: ' + v);
+  }
+}

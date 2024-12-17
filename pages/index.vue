@@ -1,10 +1,8 @@
 <template>
   <div class="index-page">
     <ConfigSelector v-model="config" />
-    <div>
-      {{ permutationResults[0].qualityModulesByTier.join(', ') }}
-    </div>
 
+    <ResultSetup :data="permutationResults" :module-slots="config.moduleSlots" />
     <ResultTable :data="permutationResults[0].output" :sample-size="50" />
   </div>
 </template>
@@ -45,5 +43,11 @@ async function doPermutationsAsync(): Promise<PermutationResult[]> {
 </script>
 
 <style lang="scss" scoped>
+.index-page {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem;
+}
 </style>
 

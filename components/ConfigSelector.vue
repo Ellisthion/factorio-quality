@@ -53,7 +53,6 @@ function updateConfig() {
   display: flex;
   flex-direction: column;
   gap: 1rem;
-  padding: 1rem;
 }
 
 .options {

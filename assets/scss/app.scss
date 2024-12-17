@@ -11,3 +11,27 @@
     background-color: lightblue;;
   }
 }
+
+table {
+  border-collapse: collapse;
+  font-variant-numeric: tabular-nums;
+}
+
+th, td {
+  padding: 0.25rem;
+
+  border: 1px solid black;
+  text-align: right;
+
+  &.no-border {
+    border: none;
+  }
+}
+
+.text-center {
+  text-align: center;
+}
+
+img {
+  vertical-align: top;
+}
