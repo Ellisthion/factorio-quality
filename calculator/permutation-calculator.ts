@@ -24,7 +24,7 @@ export class PermutationCalculator {
       const outputDiff = sum(b.output) - sum(a.output);
       const iterationsDiff = a.iterations - b.iterations;
 
-      return Math.abs(outputDiff) > 0.00001
+      return Math.abs(outputDiff) > 0.0000001
         ? outputDiff
         : iterationsDiff;
     });
