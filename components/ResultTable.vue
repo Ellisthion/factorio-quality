@@ -33,7 +33,9 @@
             Percentage
           </td>
           <td v-for="(q, i) of qualities" :key="q">
-            {{ formatValue(data[i], 'percentage', 2) }}
+            <span :class="{ 'text-muted': isNaN(data[i]) }">
+              {{ formatValue(isNaN(data[i]) ? 0 : data[i], 'percentage', 2) }}
+            </span>
           </td>
 
           <td>

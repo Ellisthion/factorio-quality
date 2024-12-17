@@ -4,7 +4,7 @@
       <button
         v-for="machine of machines" :key="machine.name"
         type="button"
-        class="button option option-machine"
+        class="button option"
         :class="{ 'is-active': machine.name === selectedMachine.name }"
         @click="selectedMachine = machine"
       >
@@ -38,7 +38,7 @@
         <button
           v-for="tier of 3" :key="tier"
           type="button"
-          class="button option option-quality-tier"
+          class="button option"
           :class="{ 'is-active': tier === selectedQualityTier }"
           @click="selectedQualityTier = (tier as ModuleTier)"
         >
@@ -50,7 +50,7 @@
         <button
           v-for="(qualityName, quality) of qualities" :key="quality"
           type="button"
-          class="button option option-quality-quality"
+          class="button option"
           :class="{ 'is-active': quality === selectedQualityQuality }"
           @click="selectedQualityQuality = (quality as QualityTier)"
         >
@@ -66,7 +66,7 @@
         <button
           v-for="tier of 3" :key="tier"
           type="button"
-          class="button option option-productivity-tier"
+          class="button option"
           :class="{ 'is-active': tier === selectedProductivityTier }"
           @click="selectedProductivityTier = (tier as ModuleTier)"
         >
@@ -78,9 +78,42 @@
         <button
           v-for="(qualityName, quality) of qualities" :key="quality"
           type="button"
-          class="button option option-productivity-quality"
+          class="button option"
           :class="{ 'is-active': quality === selectedProductivityQuality }"
           @click="selectedProductivityQuality = (quality as QualityTier)"
+        >
+          <ItemIcon :icon="qualityName" />
+        </button>
+      </div>
+    </div>
+
+    <div class="part-module">
+      <label>Quality to Keep (less is recycled)</label>
+
+      <div class="options">
+        <button
+          v-for="(qualityName, quality) of qualities" :key="quality"
+          type="button"
+          class="button option"
+          :class="{ 'is-active': quality === selectedKeepQuality }"
+          @click="selectedKeepQuality = (quality as QualityTier)"
+        >
+          <ItemIcon :icon="qualityName" />
+        </button>
+      </div>
+    </div>
+
+    <div class="part-module">
+      <label>Highest Unlocked Quality</label>
+
+      <div class="options">
+        <button
+          v-for="(qualityName, quality) of qualities" :key="quality"
+          type="button"
+          :disabled="quality <= 1"
+          class="button option"
+          :class="{ 'is-active': quality === selectedMaxQuality }"
+          @click="selectedMaxQuality = (quality as QualityTier)"
         >
           <ItemIcon :icon="qualityName" />
         </button>
@@ -106,13 +139,18 @@ const selectedProductivityQuality = ref<QualityTier>(qualityFromName('Legendary'
 const selectedQualityTier = ref<ModuleTier>(3);
 const selectedQualityQuality = ref<QualityTier>(qualityFromName('Legendary'));
 
+const selectedKeepQuality = ref<QualityTier>(qualityFromName('Legendary'));
+const selectedMaxQuality = ref<QualityTier>(qualityFromName('Legendary'));
+
 watch([
   selectedMachine,
   researchProductivity,
   selectedProductivityTier,
   selectedProductivityQuality,
   selectedQualityTier,
-  selectedQualityQuality
+  selectedQualityQuality,
+  selectedKeepQuality,
+  selectedMaxQuality
 ], () => {
   updateConfig()
 }, { immediate: true });
@@ -123,8 +161,8 @@ function updateConfig() {
     researchProductivity: researchProductivity.value,
     moduleSlots: selectedMachine.value.moduleSlots,
 
-    // maxQuality: qualityFromName('Legendary'),
-    // keepQuality: qualityFromName('Legendary'),
+    maxQuality: selectedMaxQuality.value,
+    keepQuality: selectedKeepQuality.value,
     
     productivityModuleTier: selectedProductivityTier.value,
     productivityModuleQuality: selectedProductivityQuality.value,

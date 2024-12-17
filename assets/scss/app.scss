@@ -10,6 +10,12 @@
     border: 1px solid blue;
     background-color: lightblue;;
   }
+
+  &:disabled,
+  &.is-disabled {
+    background-color: lightgrey;
+    filter: grayscale(50)
+  }
 }
 
 table {
@@ -30,6 +36,14 @@ th, td {
 
 .text-center {
   text-align: center;
+}
+
+.text-muted {
+  color: grey;
+}
+
+.text-small {
+  font-size: calc(10 / 16 * 1rem);
 }
 
 img {

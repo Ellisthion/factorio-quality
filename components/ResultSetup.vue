@@ -25,21 +25,24 @@
 
           <td v-for="(qualityName, quality) of qualities" :key="qualityName">
             <div class="result-cell">
-              <div class="module-count">
-                {{ setup.qualityModulesByTier[quality] }}
-              </div>
-
-              <div class="stats">
-                <div class="stat stat-quality">
-                  <span>Q:</span>
-                  <span>{{ getStatQuality(setup.qualityModulesByTier[quality]) }}</span>
+              <template v-if="quality <= config.maxQuality">
+                <div class="module-count">
+                  {{ setup.qualityModulesByTier[quality] }}
                 </div>
 
-                <div class="stat stat-productivity">
-                  <span>P:</span>
-                  <span>{{ getStatProductivity(config.moduleSlots - setup.qualityModulesByTier[quality]) }}</span>
+                <div class="stats text-muted text-small">
+                  <div class="stat stat-quality">
+                    <span>Q:</span>
+                    <span>{{ getStatQuality(setup.qualityModulesByTier[quality]) }}</span>
+                  </div>
+
+                  <div class="stat stat-productivity">
+                    <span>P:</span>
+                    <span>{{ getStatProductivity(config.moduleSlots - setup.qualityModulesByTier[quality]) }}</span>
+                  </div>
                 </div>
-              </div>
+              </template>
+              <span class="text-muted text-small text-center" v-else>N/A</span>
             </div>
           </td>
         </tr>
@@ -89,9 +92,6 @@ function getStatQuality(qualityModuleCount: number): string {
   gap: 0.25rem;
   
   .stats {
-    font-size: calc(10 / 16 * 1rem);
-    color: grey;
-
     .stat {
       display: flex;
       justify-content: space-between;
