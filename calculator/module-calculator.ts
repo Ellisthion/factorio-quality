@@ -1,7 +1,7 @@
 import type { CalculatorConfig } from './calculator-config';
 import { getModuleValue } from './constants';
 
-const maxProductivity = 400;
+const maxProductivity = 4;
 
 export function calculateProductivity(productivityModules: number, config: CalculatorConfig): number {
   const productivityModuleValue = getModuleValue('productivity', config.productivityModuleQuality, config.productivityModuleTier);

@@ -22,7 +22,7 @@
       <label for="researchProductivity">Research Productivity</label>
 
       <div>
-        <input id="researchProductivity" v-model="researchProductivity" type="number" step="10" min="0" />
+        <input id="researchProductivity" v-model="researchProductivity" type="number" step="10" min="0" max="400" />
         <span>&nbsp;%</span>
       </div>
     </div>
