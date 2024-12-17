@@ -25,7 +25,15 @@ export function printTuple(array: number[]): string {
 export function formatValue(v: number, format: 'percentage' | 'outputs', precision?: number): string {
   switch (format) {
     case 'percentage': {
-      const decimalPlaces = precision ?? 3;
+      if (precision) {
+        if (v === 1 || v === 0) {
+          return (v * 100) + '%';
+        }
+
+        return (v * 100).toFixed(precision) + '%';
+      }
+      
+      const decimalPlaces = 3;
       const multiplier = Math.pow(10, decimalPlaces);
       return Math.round(v * 100 * multiplier) / multiplier + '%';
     }

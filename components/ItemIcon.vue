@@ -1,14 +1,6 @@
 <template>
   <span class="item-icon-component" :icon-size="size">
-    <span v-if="icon === 'Quality Module'">
-      Q
-    </span>
-
-    <span v-else-if="icon === 'Productivity Module'">
-      P
-    </span>
-
-    <span v-else-if="icon === 'Normal'">
+    <span v-if="icon === 'Normal'">
       <img src="~/assets/images/Quality_normal.png" alt="Normal Quality" class="quality-icon" />
     </span>
 
@@ -29,20 +21,23 @@
     </span>
 
     <span v-else>
-      Unsupported Icon
+      <img :src=get32px(icon) :alt="icon" />
     </span>
   </span>
 </template>
 
 <script setup lang="ts">
-import type { Quality } from '~/calculator/constants';
-
 withDefaults(defineProps<{
-  icon: 'Quality Module' | 'Productivity Module' | Quality,
+  icon: string,
   size?: 'normal'
 }>(), {
   size: 'normal'
 });
+
+function get32px(name: string): string {
+  const images = import.meta.glob('../assets/images/*', { as: 'url', eager: true }) as Record<string, string>;
+  return images[`../assets/images/32px-${name}.png`];
+}
 </script>
 
 <style lang="scss" scoped>

@@ -8,8 +8,23 @@
         :class="{ 'is-active': machine.name === selectedMachine.name }"
         @click="selectedMachine = machine"
       >
-        {{ machine.name }}
+      <ItemIcon :icon="machine.icon" />
       </button>
+    </div>
+
+    <div class="form">
+      <label>Machine</label>
+      <span>{{ selectedMachine.name }}</span>
+
+      <label>Machine Productivity</label>
+      <span>{{ selectedMachine.productivity }}%</span>
+
+      <label for="researchProductivity">Research Productivity</label>
+
+      <div>
+        <input id="researchProductivity" v-model="researchProductivity" type="number" step="10" min="0" />
+        <span>&nbsp;%</span>
+      </div>
     </div>
   </div>
 </template>
@@ -23,15 +38,16 @@ const model = defineModel<CalculatorConfig>();
 model.value = buildConfig({});
 
 const selectedMachine = ref<Machine>(machines[0]);
+const researchProductivity = ref(0);
 
-watch([selectedMachine], () => {
+watch([selectedMachine, researchProductivity], () => {
   updateConfig()
 }, { immediate: true });
 
 function updateConfig() {
   model.value = buildConfig({
     machineProductivity: selectedMachine.value.productivity,
-    // researchProductivity: 0,
+    researchProductivity: researchProductivity.value,
     moduleSlots: selectedMachine.value.moduleSlots
 
     // maxQuality: qualityFromName('Legendary'),
@@ -58,6 +74,29 @@ function updateConfig() {
 .options {
   display: flex;
   gap: 0.5rem;
+}
+
+dl, .form {
+  display: grid;
+  grid-template-columns: max-content max-content;
+  gap: 0.5rem 1rem;
+
+  dt, dd {
+    margin: 0;
+  }
+
+  dt {
+    font-weight: bold;
+  }
+}
+
+label {
+  font-weight: bold;
+}
+
+input {
+  width: 4rem;
+  display: inline-block;
 }
 </style>
 
