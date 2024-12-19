@@ -1,9 +1,32 @@
 <template>
   <div class="index-page">
-    <ConfigSelector v-model="config" />
+    <section>
+      <div class="preamble">
+        <h1>Factorio Quality Recycling</h1>
+        <p>This simplified calculator assumes you will be doing:</p>
+        <ul>
+          <li>Craft an item</li>
+          <li>Recycle it</li>
+          <li>Loop until item is sufficient quality</li>
+        </ul>
+        <p>
+          We're assuming the recycler has max quality modules.
+          But for each tier of crafting the item itself,
+          what split of quality and productivity modules is optimal?
+        </p>
+      </div>
 
-    <ResultSetup :data="permutationResults" :config="config" />
-    <ResultTable :data="permutationResults[0].output" :sample-size="50" />
+      <h2>Config</h2>
+    
+      <ConfigSelector v-model="config" />
+    </section>
+
+    <section>
+      <h2>Results</h2>
+
+      <ResultSetup :data="permutationResults" :config="config" />
+      <ResultTable :data="permutationResults[0].output" :sample-size="50" />
+    </section>
 
     <!-- <button type="button" class="button" @click="runOptimiser()">
       Run Optimiser
@@ -55,6 +78,22 @@ async function doPermutationsAsync(): Promise<PermutationResult[]> {
   flex-direction: column;
   gap: 1rem;
   padding: 1rem;
+
+  section {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  @media (min-width: 768px) {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(min-content, 1fr));
+    column-gap: 2rem;
+  }
+}
+
+.preamble {
+  max-width: 30rem;
 }
 </style>
 

@@ -3,14 +3,13 @@
     <table>
       <thead>
         <tr>
-          <th class="no-border"></th>
+          <!-- <th class="no-border"></th> -->
           <th :colspan="qualities.length + 1" class="text-center">
             Final Outputs
           </th>
-          <th class="no-border"></th>
         </tr>
         <tr>
-          <th class="no-border"></th>
+          <!-- <th class="no-border"></th> -->
           
           <th v-for="qualityName of qualities" :key="qualityName" class="text-center">
             <ItemIcon :icon="qualityName" />
@@ -29,9 +28,9 @@
           </td>
         </tr> -->
         <tr>
-          <td>
+          <!-- <td>
             Percentage
-          </td>
+          </td> -->
           <td v-for="(q, i) of qualities" :key="q">
             <span :class="{ 'text-muted': isNaN(data[i]) }">
               {{ formatValue(isNaN(data[i]) ? 0 : data[i], 'percentage', 2) }}
