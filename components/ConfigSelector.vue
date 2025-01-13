@@ -9,18 +9,22 @@
         @click="selectedMachine = machine"
       >
         <ItemIcon :icon="machine.icon" />
+        <div class="icon-label" v-if="machine.iconLabel">{{ machine.iconLabel }}</div>
       </button>
     </div>
 
     <div class="form">
       <label>Machine</label>
-      <span>{{ selectedMachine.name }}</span>
+      <span class="truncate">{{ selectedMachine.name }}</span>
 
       <label>Module Slots</label>
       <span>{{ selectedMachine.moduleSlots }}</span>
 
       <label>Machine Productivity</label>
       <span>{{ selectedMachine.productivity }}%</span>
+
+      <label>Machine Quality</label>
+      <span>{{ selectedMachine.quality }}%</span>
 
       <label for="researchProductivity">Research Productivity</label>
 
@@ -158,6 +162,7 @@ watch([
 function updateConfig() {
   model.value = buildConfig({
     machineProductivity: selectedMachine.value.productivity,
+    machineQuality: selectedMachine.value.quality,
     researchProductivity: researchProductivity.value,
     moduleSlots: selectedMachine.value.moduleSlots,
 
@@ -184,13 +189,21 @@ function updateConfig() {
 
 .options {
   display: flex;
+  flex-wrap: wrap;
   gap: 0.5rem;
+}
+
+.option {
+  position: relative;
 }
 
 dl, .form {
   display: grid;
-  grid-template-columns: max-content max-content;
+  grid-template-columns: max-content 1fr;
   gap: 0.5rem 1rem;
+
+  overflow-x: hidden;
+  max-width: 100%;
 
   dt, dd {
     margin: 0;
@@ -214,6 +227,23 @@ input {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+}
+
+.icon-label {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+
+  font-size: 0.625rem;
+  font-weight: bold;
+  // text-transform: uppercase;
+  color: white;
+  text-shadow:
+    0px 0px 1px black,
+    0px 0px 2px black,
+    0px 0px 3px black,
+    0px 0px 4px black;
 }
 </style>
 

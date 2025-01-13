@@ -27,6 +27,7 @@ export class Optimiser {
 
             const config = buildConfig({
               machineProductivity: machine.productivity,
+              machineQuality: machine.quality,
               researchProductivity: researchProductivity,
               moduleSlots: machine.moduleSlots,
 
@@ -55,6 +56,7 @@ export class Optimiser {
     return {
       machineName: machineName,
       machineProductivity: config.machineProductivity,
+      machineQuality: config.machineQuality,
       researchProductivity: config.researchProductivity,
       totalBaseProductivity: config.machineProductivity + config.researchProductivity,
 
@@ -88,6 +90,7 @@ export class Optimiser {
 export type TrialResult = {
   machineName: string,
   machineProductivity: number,
+  machineQuality: number,
   researchProductivity: number,
   totalBaseProductivity: number,
 

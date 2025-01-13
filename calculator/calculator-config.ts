@@ -9,6 +9,7 @@ export function buildConfig(config: Partial<CalculatorConfig>): CalculatorConfig
 
 export const defaultConfig: CalculatorConfig = {
   machineProductivity: 0,
+  machineQuality: 0,
   researchProductivity: 0,
   moduleSlots: 4,
 
@@ -26,6 +27,7 @@ export const defaultConfig: CalculatorConfig = {
 
 export type CalculatorConfig = {
   machineProductivity: number,
+  machineQuality: number,
   researchProductivity: number,
   moduleSlots: number,
 

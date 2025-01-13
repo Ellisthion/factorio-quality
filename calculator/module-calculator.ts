@@ -15,5 +15,6 @@ export function calculateProductivity(productivityModules: number, config: Calcu
 
 export function calculateQuality(qualityModules: number, config: CalculatorConfig): number {
   const qualityModuleValue = getModuleValue('quality', config.qualityModuleQuality, config.qualityModuleTier);
-  return (qualityModules * qualityModuleValue) / 100;
+  const result = (config.machineQuality + qualityModules * qualityModuleValue) / 100;
+  return result;
 }

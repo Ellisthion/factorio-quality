@@ -54,3 +54,9 @@ th, td {
 img {
   vertical-align: top;
 }
+
+.truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
