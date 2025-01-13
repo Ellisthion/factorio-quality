@@ -7,6 +7,7 @@
         class="button option"
         :class="{ 'is-active': machine.name === selectedMachine.name }"
         @click="selectedMachine = machine"
+        v-tooltip="machine.name"
       >
         <ItemIcon :icon="machine.icon" />
         <div class="icon-label" v-if="machine.iconLabel">{{ machine.iconLabel }}</div>
@@ -45,6 +46,7 @@
           class="button option"
           :class="{ 'is-active': tier === selectedQualityTier }"
           @click="selectedQualityTier = (tier as ModuleTier)"
+          v-tooltip="`Quality Module ${tier}`"
         >
           <ItemIcon :icon="`Quality_module${tier === 1 ? '' : '_' + tier}`" />
         </button>
@@ -57,6 +59,7 @@
           class="button option"
           :class="{ 'is-active': quality === selectedQualityQuality }"
           @click="selectedQualityQuality = (quality as QualityTier)"
+          v-tooltip="qualityName"
         >
           <ItemIcon :icon="qualityName" />
         </button>
@@ -73,6 +76,7 @@
           class="button option"
           :class="{ 'is-active': tier === selectedProductivityTier }"
           @click="selectedProductivityTier = (tier as ModuleTier)"
+          v-tooltip="`Productivity Module ${tier}`"
         >
           <ItemIcon :icon="`Productivity_module${tier === 1 ? '' : '_' + tier}`" />
         </button>
@@ -85,6 +89,7 @@
           class="button option"
           :class="{ 'is-active': quality === selectedProductivityQuality }"
           @click="selectedProductivityQuality = (quality as QualityTier)"
+          v-tooltip="qualityName"
         >
           <ItemIcon :icon="qualityName" />
         </button>
@@ -101,6 +106,7 @@
           class="button option"
           :class="{ 'is-active': quality === selectedKeepQuality }"
           @click="selectedKeepQuality = (quality as QualityTier)"
+          v-tooltip="qualityName"
         >
           <ItemIcon :icon="qualityName" />
         </button>
@@ -118,6 +124,7 @@
           class="button option"
           :class="{ 'is-active': quality === selectedMaxQuality }"
           @click="selectedMaxQuality = (quality as QualityTier)"
+          v-tooltip="qualityName"
         >
           <ItemIcon :icon="qualityName" />
         </button>
