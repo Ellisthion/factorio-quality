@@ -33,6 +33,11 @@
         <input id="researchProductivity" v-model="researchProductivity" type="number" step="10" min="0" max="400" />
         <span>&nbsp;%</span>
       </div>
+
+      <label for="recipeSupportsProductivity">Recipe can use Prod</label>
+      <div>
+        <input id="recipeSupportsProductivity" v-model="recipeSupportsProductivity" type="checkbox" />
+      </div>
     </div>
 
 
@@ -144,6 +149,7 @@ model.value = buildConfig({});
 
 const selectedMachine = ref<Machine>(machines[0]);
 const researchProductivity = ref(0);
+const recipeSupportsProductivity = ref(true);
 
 const selectedProductivityTier = ref<ModuleTier>(3);
 const selectedProductivityQuality = ref<QualityTier>(qualityFromName('Legendary'));
@@ -156,6 +162,7 @@ const selectedMaxQuality = ref<QualityTier>(qualityFromName('Legendary'));
 watch([
   selectedMachine,
   researchProductivity,
+  recipeSupportsProductivity,
   selectedProductivityTier,
   selectedProductivityQuality,
   selectedQualityTier,
@@ -171,6 +178,7 @@ function updateConfig() {
     machineProductivity: selectedMachine.value.productivity,
     machineQuality: selectedMachine.value.quality,
     researchProductivity: researchProductivity.value,
+    recipeCanUseProductivity: recipeSupportsProductivity.value,
     moduleSlots: selectedMachine.value.moduleSlots,
 
     maxQuality: selectedMaxQuality.value,
@@ -228,6 +236,10 @@ label {
 input {
   width: 4rem;
   display: inline-block;
+
+  &[type="checkbox"] {
+    width: unset;
+  }
 }
 
 .part-module {

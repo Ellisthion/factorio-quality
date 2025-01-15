@@ -11,6 +11,7 @@ export const defaultConfig: CalculatorConfig = {
   machineProductivity: 0,
   machineQuality: 0,
   researchProductivity: 0,
+  recipeCanUseProductivity: true,
   moduleSlots: 4,
 
   maxQuality: qualityFromName('Legendary'),
@@ -29,10 +30,11 @@ export type CalculatorConfig = {
   machineProductivity: number,
   machineQuality: number,
   researchProductivity: number,
+  recipeCanUseProductivity: boolean,
   moduleSlots: number,
 
-  maxQuality: number,
-  keepQuality: number,
+  maxQuality: QualityTier,
+  keepQuality: QualityTier,
   
   productivityModuleTier: ModuleTier,
   productivityModuleQuality: QualityTier,

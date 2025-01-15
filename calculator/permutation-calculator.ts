@@ -55,6 +55,11 @@ export class PermutationCalculator {
   }
 
   private createAllModuleSetups(): number[][] {
+    // Short circuit if prod modules aren't supported in this recipe
+    if (!this.config.recipeCanUseProductivity) {
+      return [new Array(this.config.maxQuality + 1).fill(this.config.moduleSlots)];
+    }
+
     let results: number[][] = [[]];
     for (let quality = 0; quality <= this.config.maxQuality; ++quality) {
       const previousResults = results;
